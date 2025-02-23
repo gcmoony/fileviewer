@@ -1,34 +1,59 @@
-import React from "react"
-import { NavLink } from "react-router"
 
-export default function App({ children }) {
+import * as React from "react"
+import { createRoot } from "react-dom/client"
+import FilePicker from "./FilePicker"
+import Navbar from "./Navbar"
+import FileViewer from "./FileViewer"
+
+const root = createRoot(document.getElementById("root"))
+root.render(
+  <>
+    <App />
+  </>
+)
+
+function App() {
+  // Example functions for sending and receiving from main
+  // =====================================
+  // Sending
+  // const example1 = window.api.receive("sendFromMain", (data) => {
+  //   console.log("Received message from main!")
+  //   console.log(data.message)
+  //   // setMsg(data.message)
+  // })
+  // // Receiving
+  // const example2 = window.api.send("sendToMain", "Hello from app")
+  // =====================================
+  const [viewerCtx, setViewerCtx] = React.useState()
+
+  function sendFilepathToMain(filePath) {
+    window.api.send("sendFilePath", filePath)
+  }
+
+  function getFileDialog() {
+    window.api.send("getFileDialog", "Requesting file selection dialog")
+  }
+
+  // const [aFile, setAFile] = React.useState()
+  window.api.receive("receiveFileDialog", (data) => {
+    setViewerCtx(data.data)
+  })
+
   return (
-    <div>
-      {/* Nav Bar */}
-      <nav>
-        {/* Logo Stuff */}
-        <div className='logo'>
-          <h1>FileView</h1>
-          <p>The File Viewing app</p>
-        </div>
-        {/* Links */}
-        <div className='nav-links'>
-          <NavLink
-            to={"/"}
-            end
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to={"/about"}
-            end
-          >
-            About
-          </NavLink>
-        </div>
-      </nav>
-      {/* Document Content */}
-      {children}
-    </div>
+    <>
+      <Navbar />
+      {/* <div>{msg ? `From main: ${msg}` : "Loading message"}</div> */}
+      <main>
+        <FilePicker
+          fileSubmitter={sendFilepathToMain}
+          fileSelector={getFileDialog}
+        />
+
+        {viewerCtx && <FileViewer fileText={viewerCtx} />}
+
+        <div id='info'></div>
+      </main>
+    </>
+
   )
 }
