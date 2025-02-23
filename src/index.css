@@ -8,6 +8,7 @@ body {
   margin: auto;
   max-width: 38rem;
   padding: 2rem;
+
   color: rgba(209, 208, 208, 0.788);
   background: rgb(44, 59, 59)
 }
@@ -68,4 +69,5 @@ body {
 
 .viewer img {
   width: 100%;
+
 }

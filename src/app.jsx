@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import { createRoot } from "react-dom/client"
 import FilePicker from "./FilePicker"
@@ -53,5 +54,6 @@ function App() {
         <div id='info'></div>
       </main>
     </>
+
   )
 }
