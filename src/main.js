@@ -1,5 +1,6 @@
-import { app, BrowserWindow } from "electron"
+import { app, BrowserWindow, dialog, ipcMain, webUtils } from "electron"
 import path from "node:path"
+const fs = require("fs")
 import started from "electron-squirrel-startup"
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -7,9 +8,10 @@ if (started) {
   app.quit()
 }
 
+let mainWindow
 const createWindow = () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     webPreferences: {
@@ -56,3 +58,31 @@ app.on("window-all-closed", () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+ipcMain.on("sendToMain", (event, args) => {
+  console.log("Main got a message!")
+  console.log(args)
+  mainWindow.webContents.send("sendFromMain", { message: "Hello from main" })
+})
+
+ipcMain.on("sendFilePath", (event, args) => {
+  console.log(args)
+  // const filePath = webUtils.getPathForFile()
+  mainWindow.webContents.send("receiveFilePath", {
+    message: "Received the file path",
+  })
+})
+
+ipcMain.on("getFileDialog", async (event, args) => {
+  console.log(args)
+  let aFile = await dialog.showOpenDialog(mainWindow, {
+    properties: ["openFile"],
+    filters: [{ name: "Text", extensions: ["md"] }],
+  })
+  try {
+    const data = fs.readFileSync(aFile.filePaths[0], "utf-8")
+    mainWindow.webContents.send("receiveFileDialog", { data: data })
+  } catch (err) {
+    console.log(err)
+  }
+  // mainWindow.webContents.send("receiveFileDialog", { data: aFile })
+})
