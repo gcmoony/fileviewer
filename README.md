@@ -13,8 +13,9 @@ opened files.
 
 ### Some preview pictures
 
-How the app looks upon opening
+How the app looks upon opening <br/>
 <img src="./public/preview_01.png" alt="Blank starting app">
-
-How the app looks when reading a document
+<br/>
+<br/>
+How the app looks when reading a document<br/>
 <img src="./public/preview_02.png" alt="App reading a file">
