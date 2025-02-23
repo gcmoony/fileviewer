@@ -61,6 +61,11 @@ body {
   cursor: pointer;
 }
 
+.viewer > * {
+  
+  
+}
+
 .viewer img {
   width: 100%;
 }
