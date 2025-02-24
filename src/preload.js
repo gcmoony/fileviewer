@@ -6,14 +6,14 @@ const { contextBridge, ipcRenderer } = require("electron")
 contextBridge.exposeInMainWorld("api", {
   send: (channel, data) => {
     // Listening channels defined in main
-    let validChannels = ["sendToMain", "sendFilePath", "getFileDialog"]
+    let validChannels = ["openNewFileReq"]
     if (validChannels.includes(channel)) {
       ipcRenderer.send(channel, data)
     }
   },
   receive: (channel, func) => {
     // Emitting channels defined in main
-    let validChannels = ["sendFromMain", "receiveFilePath", "receiveFileDialog"]
+    let validChannels = ["openNewFileRes"]
     if (validChannels.includes(channel)) {
       ipcRenderer.on(channel, (event, ...args) => {
         func(...args)
@@ -21,11 +21,3 @@ contextBridge.exposeInMainWorld("api", {
     }
   },
 })
-
-// === Example from Electron Tutorial ===
-// contextBridge.exposeInMainWorld("versions", {
-//   node: () => process.version.node,
-//   chrome: () => process.versions.chrome,
-//   electron: () => process.version.electron,
-// })
-// === End of example ===

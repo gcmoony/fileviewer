@@ -13,19 +13,21 @@ root.render(
 )
 
 function App() {
-  const [currentView, setCurrentView] = React.useState()
-
+  // const [currentView, setCurrentView] = React.useState()
   const [viewerCtx, setViewerCtx] = React.useState()
-
   const [recentFileList, setRecentFileList] = React.useState([])
 
   // Request to open new file
   function openNewFile() {
     window.api.send("openNewFileReq", "Requesting a new file")
   }
-  // Listen for response
+  // Listen for open new file response
   window.api.receive("openNewFileRes", (data) => {
-    console.log(data)
+    // console.log(data)
+    // Expected: fileContent, fileName, filePath
+    const tempList = [...recentFileList]
+    setRecentFileList([data.filePath, ...tempList])
+    setViewerCtx(data.fileContent)
   })
 
   // Request to open file from file name
@@ -53,17 +55,14 @@ function App() {
     <>
       <Navbar />
       <main>
-        {/* <FilePicker
-          fileSubmitter={sendFilepathToMain}
-          fileSelector={getFileDialog}
-        /> */}
+        <FilePicker fileSelector={openNewFile} />
 
         {/* <RecentFiles
           fileSet={recentFileList}
           requestFile={requestFile}
         /> */}
 
-        {/* {viewerCtx && <FileViewer fileText={viewerCtx} />} */}
+        {viewerCtx && <FileViewer fileText={viewerCtx} />}
       </main>
     </>
   )
