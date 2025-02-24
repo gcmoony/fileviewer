@@ -9,22 +9,19 @@ body {
   max-width: 38rem;
   padding: 2rem;
 
-  color: rgba(209, 208, 208, 0.788);
-  background: rgb(44, 59, 59)
+  color: rgb(230, 230, 230);
+  background: rgb(27, 31, 41)
 }
 
 
 .navbar {
   display: flex;
-  /* outline: solid black 2px; */
   justify-content: space-between;
 }
 
 .logo {
   display: flex;
   flex-direction: column;
-  
-  /* outline: solid red 1px; */
   margin: 0;
   padding: 0;
 }
@@ -37,7 +34,6 @@ body {
 .links {
   padding: 0;
   list-style: none;
-  /* outline: solid red 1px; */
   display: flex;
   gap: 1em;
 }
@@ -57,17 +53,130 @@ body {
   padding: 1em;
   font-size: large;
   border-radius: 5px;
-  color: white;
-  background-color: rgb(26, 163, 163);
+  color: rgba(255, 255, 255, 0.808);
+  background-color: rgb(26, 120, 163);
   cursor: pointer;
 }
 
-.viewer > * {
+.button:hover {
+  filter: saturate(140%);
+}
+
+
+
+.viewer * {
+  color: inherit
+}
+
+.viewer h1,
+.viewer h2,
+.viewer h3 {
+  color:rgb(101, 134, 218)
+}
+
+.viewer h1,
+.viewer h2 {
+  border-bottom: 2px solid rgb(59, 58, 97);
+  margin: 0 0 1em;
+  padding: .5em 0;
+}
+
+.viewer strong{
+  color: rgb(235, 252, 3);
+}
+
+.viewer a {
+  text-decoration: none;
+  font-weight: 500;
+  color: rgb(14, 137, 207);
+}
+
+.viewer pre {
+  /* outline: solid red 2px; */
+  /* text-wrap-mode: wrap; */
   
+  background-color: rgba(0, 0, 0, 0.39);
+  padding: .75em;
+  border-radius: 5px;
+  overflow: auto;
+}
+.viewer table {
+  /* border-bottom: solid red 1px; */
   
+  border-collapse: collapse;
+  min-width: 100%;
+  overflow: scroll;
+}
+
+th {
+  background-color: rgb(66, 66, 122);
+  
+}
+
+th, td {
+  padding: .1em 1em;
+}
+tr:nth-child(even) {
+  background-color: rgb(30, 30, 68);
+}
+
+tr:hover:not(thead tr) {
+  background: rgb(134, 134, 134);
+  color: black;
+}
+
+
+pre::-webkit-scrollbar {
+  width: 10px;
+  background-color: transparent;
+  height: 10px;
+}
+
+::-webkit-scrollbar-corner {
+  display: none;
+}
+
+::-webkit-scrollbar {
+  width: 1em;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: grey;
+  /* box-shadow: 0 -100vh 0 100vh green, 0 0 15px 5px black; */
 }
 
 .viewer img {
   width: 100%;
 
+}
+
+.file-picker-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  
+}
+
+.file-picker-container > select {
+  border-radius: 5px;
+  width: 100%;
+  background-color: rgba(77, 77, 77, 0.651);
+  outline: none;
+  border: none;
+  padding: 1em;
+  color: white;
+  font-size: large;
+}
+
+option {
+  color: inherit;
+  background: black;
+}
+
+.button:focus,  select:focus{
+  outline: solid white 3px;
 }

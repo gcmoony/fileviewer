@@ -1,9 +1,9 @@
-
 import * as React from "react"
 import { createRoot } from "react-dom/client"
 import FilePicker from "./FilePicker"
 import Navbar from "./Navbar"
 import FileViewer from "./FileViewer"
+import RecentFiles from "./RecentFiles"
 
 const root = createRoot(document.getElementById("root"))
 root.render(
@@ -13,47 +13,58 @@ root.render(
 )
 
 function App() {
-  // Example functions for sending and receiving from main
-  // =====================================
-  // Sending
-  // const example1 = window.api.receive("sendFromMain", (data) => {
-  //   console.log("Received message from main!")
-  //   console.log(data.message)
-  //   // setMsg(data.message)
-  // })
-  // // Receiving
-  // const example2 = window.api.send("sendToMain", "Hello from app")
-  // =====================================
+  const [currentView, setCurrentView] = React.useState()
+
   const [viewerCtx, setViewerCtx] = React.useState()
 
-  function sendFilepathToMain(filePath) {
-    window.api.send("sendFilePath", filePath)
-  }
+  const [recentFileList, setRecentFileList] = React.useState([])
 
-  function getFileDialog() {
-    window.api.send("getFileDialog", "Requesting file selection dialog")
+  // Request to open new file
+  function openNewFile() {
+    window.api.send("openNewFileReq", "Requesting a new file")
   }
+  // Listen for response
+  window.api.receive("openNewFileRes", (data) => {
+    console.log(data)
+  })
 
-  // const [aFile, setAFile] = React.useState()
+  // Request to open file from file name
+
+  // function sendFilepathToMain(filePath) {
+  //   window.api.send("sendFilePath", filePath)
+  // }
+
+  // function getFileDialog() {
+  //   window.api.send("getFileDialog", ["Requesting file selection dialog"])
+  // }
+
+  // function requestFile(fileName = None) {
+  //   window.api.send("getFileDialog", ["Reopen file", fileName])
+  // }
+
   window.api.receive("receiveFileDialog", (data) => {
+    const tempList = [...recentFileList]
+    !tempList.includes(...data.fileName) &&
+      setRecentFileList([...data.fileName, ...recentFileList])
     setViewerCtx(data.data)
   })
 
   return (
     <>
       <Navbar />
-      {/* <div>{msg ? `From main: ${msg}` : "Loading message"}</div> */}
       <main>
-        <FilePicker
+        {/* <FilePicker
           fileSubmitter={sendFilepathToMain}
           fileSelector={getFileDialog}
-        />
+        /> */}
 
-        {viewerCtx && <FileViewer fileText={viewerCtx} />}
+        {/* <RecentFiles
+          fileSet={recentFileList}
+          requestFile={requestFile}
+        /> */}
 
-        <div id='info'></div>
+        {/* {viewerCtx && <FileViewer fileText={viewerCtx} />} */}
       </main>
     </>
-
   )
 }

@@ -9,13 +9,13 @@ export default function Navbar() {
       </div>
       {/* <ul className='links'>
         <li>
-          <a href='#'>Link 1</a>
+          <a href='#'>Home</a>
         </li>
         <li>
-          <a href='#'>Link 2</a>
+          <a href='#'>Recently Opened</a>
         </li>
         <li>
-          <a href='#'>Link 3</a>
+          <a href='#'>About</a>
         </li>
       </ul> */}
     </nav>
