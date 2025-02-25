@@ -4,18 +4,21 @@ A simple desktop reading application.
 
 ## What does it do?
 
-Currently, it opens markdown files (.md) for viewing. Wanted to create a reader
-that doesn't require me opening VSCode and performing a preview.
+It's a desktop markdown file viewing application. I made this program because I
+am currently taking a class that provides markdown files as additional course
+content. I don't want to open VSCode and use an extension just to read my files.
 
-It's _really really really_ barebones. May consider adding the ability to read
-other types of files, and adding a library for easy access to your recently
-opened files.
+Currently, it is capable of performing the following:
 
-### Some preview pictures
+- Opening markdown files for viewing
+- Page switching to switch between recently opened files (from current session)
 
-How the app looks upon opening <br/>
-<img src="./public/preview_01.png" alt="Blank starting app">
-<br/>
-<br/>
-How the app looks when reading a document<br/>
-<img src="./public/preview_02.png" alt="App reading a file">
+What I'd like to include in the future:
+
+- Restore recently opened files session to future sessions
+- Quick edit feature, for when malformed markdown is noticed
+
+### Demo
+
+Here's a video demonstration of the application in use (0:42) <br/>
+<img src="./public/output.gif" alt="App demo"> <
