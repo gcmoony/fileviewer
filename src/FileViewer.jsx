@@ -15,7 +15,6 @@ export default function FileViewer({ fileText }) {
   function parseFile() {
     const parsedText = purify.sanitize(marked(fileText))
     setText((e) => {
-      // console.log(parsedText)
       return parsedText
     })
   }

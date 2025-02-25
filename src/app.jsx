@@ -13,9 +13,9 @@ root.render(
 )
 
 function App() {
-  // const [currentView, setCurrentView] = React.useState()
   const [viewerCtx, setViewerCtx] = React.useState()
   const [recentFileList, setRecentFileList] = React.useState([])
+  const [fileNameList, setFileNameList] = React.useState([])
 
   // Request to open new file
   function openNewFile() {
@@ -23,32 +23,31 @@ function App() {
   }
   // Listen for open new file response
   window.api.receive("openNewFileRes", (data) => {
-    // console.log(data)
-    // Expected: fileContent, fileName, filePath
-    const tempList = [...recentFileList]
-    setRecentFileList([data.filePath, ...tempList])
+    // Add file to set if it doesn't exist
+    setRecentFileList((prev) => {
+      return prev.includes(data.filePath)
+        ? [data.filePath, ...prev.filter((item) => item != data.filePath)]
+        : [data.filePath, ...prev]
+    })
+    setFileNameList((prev) => {
+      return prev.includes(data.fileName)
+        ? [data.fileName, ...prev.filter((item) => item != data.fileName)]
+        : [data.fileName, ...prev]
+    })
+    // Set the viewer context
     setViewerCtx(data.fileContent)
   })
 
-  // Request to open file from file name
-
-  // function sendFilepathToMain(filePath) {
-  //   window.api.send("sendFilePath", filePath)
-  // }
-
-  // function getFileDialog() {
-  //   window.api.send("getFileDialog", ["Requesting file selection dialog"])
-  // }
-
-  // function requestFile(fileName = None) {
-  //   window.api.send("getFileDialog", ["Reopen file", fileName])
-  // }
-
-  window.api.receive("receiveFileDialog", (data) => {
-    const tempList = [...recentFileList]
-    !tempList.includes(...data.fileName) &&
-      setRecentFileList([...data.fileName, ...recentFileList])
-    setViewerCtx(data.data)
+  // Request to open recent file
+  function openRecentFile(filePath) {
+    window.api.send("openRecentFileReq", {
+      message: "Requesting file from file name",
+      path: filePath,
+    })
+  }
+  // Listen for open recent file
+  window.api.receive("openRecentFileRes", (data) => {
+    setViewerCtx(data.fileContent)
   })
 
   return (
@@ -57,10 +56,11 @@ function App() {
       <main>
         <FilePicker fileSelector={openNewFile} />
 
-        {/* <RecentFiles
-          fileSet={recentFileList}
-          requestFile={requestFile}
-        /> */}
+        <RecentFiles
+          filePaths={recentFileList}
+          fileNames={fileNameList}
+          requestFile={openRecentFile}
+        />
 
         {viewerCtx && <FileViewer fileText={viewerCtx} />}
       </main>

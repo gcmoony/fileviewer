@@ -104,33 +104,46 @@ ipcMain.on("openNewFileReq", async (event, ...args) => {
   let selectedFile, fileAbsPath, fileName
   try {
     // Select file from dialog
-    selectedFile = await dialog.showOpenDialog(mainWindow, {
+    const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
       properties: ["openFile"],
       filters: [{ name: "Markdown", extensions: ["md"] }],
     })
-    // Set the absolute path
-    fileAbsPath = selectedFile.filePaths[0]
+    if (!canceled) {
+      // Set the absolute path
+      fileAbsPath = filePaths[0]
 
-    // Get the file name
-    let temp = fileAbsPath.split("\\")
-    fileName = temp[temp.length - 1]
-  } catch (err) {
-    console.log(err)
-  }
+      // Get the file name
+      let temp = fileAbsPath.split("\\")
+      fileName = temp[temp.length - 1]
 
-  // Parse the file, return the content
-  try {
-    const data = fs.readFileSync(fileAbsPath, "utf-8")
-    mainWindow.webContents.send("openNewFileRes", {
-      fileContent: data,
-      fileName: fileName,
-      filePath: fileAbsPath,
-    })
+      // Parse the file, return the content
+      try {
+        const data = fs.readFileSync(fileAbsPath, "utf-8")
+        mainWindow.webContents.send("openNewFileRes", {
+          fileContent: data,
+          fileName: fileName,
+          filePath: fileAbsPath,
+        })
 
-    // Write the file path
+        // Write the file path
+      } catch (err) {
+        console.log(err)
+      }
+    }
   } catch (err) {
     console.log(err)
   }
 })
 
 // Open recent file listener
+ipcMain.on("openRecentFileReq", async (event, args) => {
+  // Try opening the file
+  try {
+    const data = fs.readFileSync(args.path, "utf-8")
+    mainWindow.webContents.send("openRecentFileRes", {
+      fileContent: data,
+    })
+  } catch (err) {
+    console.log(err)
+  }
+})
