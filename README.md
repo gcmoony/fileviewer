@@ -21,4 +21,4 @@ What I'd like to include in the future:
 ### Demo
 
 Here's a video demonstration of the application in use (0:42) <br/>
-<img src="./public/output.gif" alt="App demo"> <
+<img src="./public/output.gif" alt="App demo">
