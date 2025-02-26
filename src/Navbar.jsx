@@ -4,7 +4,7 @@ export default function Navbar() {
   return (
     <nav className='navbar'>
       <div className='logo'>
-        <h1>FileReader</h1>
+        <h1>FileViewer</h1>
         <p>The Simple Desktop Reader</p>
       </div>
       {/* <ul className='links'>

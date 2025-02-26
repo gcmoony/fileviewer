@@ -58,45 +58,6 @@ app.on("window-all-closed", () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
-// ipcMain.on("sendToMain", (event, args) => {
-//   console.log("Main got a message!")
-//   console.log(args)
-//   mainWindow.webContents.send("sendFromMain", { message: "Hello from main" })
-// })
-
-// ipcMain.on("sendFilePath", (event, args) => {
-//   console.log(args)
-//   // const filePath = webUtils.getPathForFile()
-//   mainWindow.webContents.send("receiveFilePath", {
-//     message: "Received the file path",
-//   })
-// })
-
-// https://www.electronjs.org/docs/latest/tutorial/recent-documents
-// ipcMain.on("getFileDialog", async (event, args) => {
-//   // Check if specific file requested
-//   let aFile
-//   if (args.length > 1) {
-//     // const data = fs.readFileSync(args[1], "utf-8")
-//     // aFile = args[1]
-//     console.log(aFile)
-//     console.log(args)
-//   } else {
-//     aFile = await dialog.showOpenDialog(mainWindow, {
-//       properties: ["openFile"],
-//       filters: [{ name: "Markdown", extensions: ["md"] }],
-//     })
-//   }
-//   try {
-//     const data = fs.readFileSync(aFile.filePaths[0], "utf-8")
-//     mainWindow.webContents.send("receiveFileDialog", {
-//       data: data,
-//       fileName: aFile.filePaths,
-//     })
-//   } catch (err) {
-//     console.log(err)
-//   }
-// })
 
 // Open new file listener
 ipcMain.on("openNewFileReq", async (event, ...args) => {
@@ -111,6 +72,7 @@ ipcMain.on("openNewFileReq", async (event, ...args) => {
     if (!canceled) {
       // Set the absolute path
       fileAbsPath = filePaths[0]
+      app.addRecentDocument(fileAbsPath)
 
       // Get the file name
       let temp = fileAbsPath.split("\\")
@@ -136,7 +98,7 @@ ipcMain.on("openNewFileReq", async (event, ...args) => {
 })
 
 // Open recent file listener
-ipcMain.on("openRecentFileReq", async (event, args) => {
+ipcMain.once("openRecentFileReq", async (event, args) => {
   // Try opening the file
   try {
     const data = fs.readFileSync(args.path, "utf-8")
@@ -147,3 +109,5 @@ ipcMain.on("openRecentFileReq", async (event, args) => {
     console.log(err)
   }
 })
+
+// https://www.electronjs.org/docs/latest/tutorial/recent-documents
